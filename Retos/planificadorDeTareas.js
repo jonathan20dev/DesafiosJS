@@ -47,67 +47,70 @@ planner.getCompletedTasks()
     tags: ["personal"]
 }]
 */
-class TaskPlanner {
-    tasks = []
+function createTaskPlanner() {
+    let tasks = [];
+    return {
+        addTask(task) {
+            return tasks.push({ ...task, completed: false });
+        },
 
-    addTask = (task) => {
-        return this.tasks.push({ ...task, completed: false });
-    }
+        removeTask(idOname) {
+            const dtask = tasks.find(
+                (task) => task.id === idOname || task.name === idOname
+            );
+            return tasks.filter((task) => task !== dtask);
+        },
 
-    removeTask = (idOname) => {
-        const dtask = this.tasks.find(task => task.id === idOname || task.name === idOname);
-        return this.tasks.filter(task => task !== dtask);
-    }
+        getTasks() {
+            return console.log(tasks);
+        },
 
-    getTasks = () => {
-        return this.tasks;
-    }
+        getPendingTasks() {
+            return console.log(tasks.filter((task) => task.completed === false));
+        },
 
-    getPendingTasks = () => {
-        return this.tasks.filter(task => task.completed === false);
-    }
+        getCompletedTasks() {
+            return console.log(tasks.filter((task) => task.completed));
+        },
 
-    getCompletedTasks = () => {
-        console.log(this.tasks.filter(task => task.completed))
-    }
+        markTaskAsCompleted(idOname) {
+            const task = tasks.find(
+                (task) => task.id === idOname || task.name === idOname
+            );
+            return (task.completed = true);
+        },
 
-    markTaskAsCompleted = (idOname) => {
-        const task = this.tasks.find(task => task.id === idOname || task.name === idOname);
-        task.completed = true;
-    }
+        getSortedTasksByPriority() {
+            const copyTaks = tasks;
+            return copyTaks.sort((a, b) => a.priority - b.priority);
+        },
 
-    getSortedTasksByPriority = () => {
-        const copyTaks = this.tasks
-        copyTaks.sort((a.priority, b.priority), b.priority - a.priority)
-    }
+        filterTasksByTag(tag) {
+            return tasks.filter((task) => task.tags === tag);
+        },
 
-    filterTasksByTag = (tag) => {
-        return this.tasks.filter(task => task.tags === tag)
-    }
-
-    updateTask = (taskId, updates) => {
-        const uptask = this.tasks.find(task => task.id === taskId);
-        [...uptask, updates]
-    }
-
+        updateTask(taskId, updates) {
+            const uptask = tasks.find((task) => task.id === taskId);
+            return [...uptask, updates];
+        },
+    };
 }
 
-const planner = new TaskPlanner();
+const planner = createTaskPlanner();
 
 planner.addTask({
     id: 1,
     name: "Comprar leche",
     priority: 1,
-    tags: ["shopping", "home"]
+    tags: ["shopping", "home"],
 });
-
 
 planner.addTask({
     id: 2,
     name: "Llamar a Juan",
     priority: 3,
-    tags: ["personal"]
+    tags: ["personal"],
 });
 
-planner.markTaskAsCompleted("Llamar a Juan")
-planner.getCompletedTasks()
+planner.markTaskAsCompleted("Llamar a Juan");
+planner.getCompletedTasks();
